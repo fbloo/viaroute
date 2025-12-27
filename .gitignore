@@ -1,4 +1,0 @@
-*.tfvars
-terraform.tfvars
-.kubeconfig
-talosconfig

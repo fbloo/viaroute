@@ -9,14 +9,16 @@ module "kubernetes" {
   cluster_kubeconfig_path  = "kubeconfig"
   cluster_talosconfig_path = "talosconfig"
 
+  # Ops
+  cluster_delete_protection = false
+
   # Enable Cilium Gateway API and Cert Manager (optional)
   cert_manager_enabled       = true
   cilium_gateway_api_enabled = true
 
   control_plane_nodepools = [
-    { name = "control", type = "cpx22", location = "fsn1", count = 3 }
+    { name = "control", type = "cx23", location = "nbg1", count = 3 }
   ]
   worker_nodepools = [
-    { name = "worker", type = "cpx22", location = "fsn1", count = 3 }
   ]
 }
