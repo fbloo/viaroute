@@ -3,7 +3,6 @@
 *.tfstate
 *.backup
 *.tfvars
-terraform.tfvars
 kubeconfig
 talosconfig
 *.hcl
