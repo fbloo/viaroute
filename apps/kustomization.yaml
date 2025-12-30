@@ -1,2 +1,3 @@
 resources:
   - demo-app/application.yaml
+  - viaroute-app/k8s/application.yaml

@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: viaroute-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/fbloo/viaroute.git
+    targetRevision: main
+    path: apps/viaroute-app/k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: viaroute
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -46,3 +46,51 @@ resource "kubernetes_namespace" "demo" {
   }
 }
 
+# ArgoCD Application for viaroute-app
+resource "kubernetes_manifest" "viaroute_app" {
+  depends_on = [helm_release.argocd]
+
+  manifest = {
+    apiVersion = "argoproj.io/v1alpha1"
+    kind       = "Application"
+    metadata = {
+      name      = "viaroute-app"
+      namespace = "argocd"
+      labels = {
+        "app.kubernetes.io/name" = "viaroute-app"
+      }
+    }
+    spec = {
+      project = "default"
+      source = {
+        repoURL        = "https://github.com/fbloo/viaroute.git"
+        targetRevision = "main"
+        path           = "apps/viaroute-app/k8s"
+      }
+      destination = {
+        server    = "https://kubernetes.default.svc"
+        namespace = "viaroute"
+      }
+      syncPolicy = {
+        automated = {
+          prune    = true
+          selfHeal = true
+        }
+        syncOptions = ["CreateNamespace=true"]
+      }
+    }
+  }
+}
+
+# Create viaroute namespace for the application
+resource "kubernetes_namespace" "viaroute" {
+  depends_on = [null_resource.verify_cluster_ready]
+
+  metadata {
+    name = "viaroute"
+    labels = {
+      "app.kubernetes.io/name" = "viaroute"
+    }
+  }
+}
+
